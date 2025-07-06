@@ -2,9 +2,13 @@ from telegram import Update
 from telegram.ext import (
     Application, CommandHandler, ContextTypes
 )
+import os
+from dotenv import load_dotenv
 import datetime
 import aiosqlite
 import re
+from telegram import Update
+from telegram.ext import Application, CommandHandler, ContextTypes
 
 GROUP_CHAT_ID = int(os.getenv("CHAT_ID"))  # Укажи ID своей группы в .env
 
@@ -228,10 +232,6 @@ async def event_members(update: Update, context: ContextTypes.DEFAULT_TYPE):
         msg += f"• {name}\n"
 
     await update.message.reply_text(msg)
-
-import os
-from telegram.ext import Application, CommandHandler
-from dotenv import load_dotenv
 
 # Загружаем переменные из .env
 load_dotenv()
