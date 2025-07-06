@@ -3,6 +3,7 @@ services:
     name: sovetnikmn
     env: python
     pythonVersion: 3.10
-    buildCommand: "pip install -r requirements.txt"
+    buildCommand: "pip install --upgrade -r requirements.txt"
     startCommand: "python bot.py"
     autoDeploy: true
+    
