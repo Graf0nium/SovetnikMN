@@ -228,7 +228,6 @@ async def event_members(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # 🚀 Финальный запуск
 def main():
     app = Application.builder().token(TOKEN).build()
-
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("add_birthday", add_birthday))
     app.add_handler(CommandHandler("my_birthday", my_birthday))
@@ -242,7 +241,7 @@ def main():
     print("🤖 SovetnikMN запущен...")
     app.run_polling()
 
-# 🧨 Инициализация БД и запуск
+
 if __name__ == "__main__":
     asyncio.run(init_db())
     main()
