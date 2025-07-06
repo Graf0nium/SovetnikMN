@@ -39,6 +39,10 @@ async def init_db():
             )
         """)
         await db.commit()
+        
+if __name__ == "__main__":
+    asyncio.run(init_db())  # запускаем асинхронную инициализацию
+    main()  # запускаем бота синхронно
 
 # 👋 /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -235,8 +239,8 @@ def main():
     app.add_handler(CommandHandler("events", list_events))
     app.add_handler(CommandHandler("event", event_members))
 
-    print("🤖 SovetnikMN запущен...")
-    app.run_polling()
+ print("🤖 SovetnikMN запущен...")
+    app.run_polling()  # ⬅️ это должно быть ВНЕ asyncio.run()
 
 # 🧨 Инициализация БД и запуск
 if __name__ == "__main__":
