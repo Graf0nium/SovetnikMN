@@ -240,7 +240,7 @@ def main():
     app.add_handler(CommandHandler("event", event_members))
 
  print("🤖 SovetnikMN запущен...")
-    app.run_polling()  # ⬅️ это должно быть ВНЕ asyncio.run()
+    app.run_polling()  
 
 # 🧨 Инициализация БД и запуск
 if __name__ == "__main__":
