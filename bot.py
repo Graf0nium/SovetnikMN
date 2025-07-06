@@ -225,7 +225,6 @@ async def event_members(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg += "\n".join(f"• {name[0]}" for name in participants)
     await update.message.reply_text(msg)
 
-# 🚀 Финальный запуск
 async def main():
     await init_db()
 
@@ -243,7 +242,6 @@ async def main():
     print("🤖 SovetnikMN запущен...")
     await app.run_polling()
 
-
 if __name__ == "__main__":
     import asyncio
-    asyncio.run(main())
+    asyncio.run(main())  
