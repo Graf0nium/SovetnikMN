@@ -7,8 +7,6 @@ from dotenv import load_dotenv
 import datetime
 import aiosqlite
 import re
-from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes
 
 GROUP_CHAT_ID = int(os.getenv("CHAT_ID"))  # Укажи ID своей группы в .env
 
