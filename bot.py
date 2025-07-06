@@ -225,6 +225,7 @@ async def main():
     await init_db()
 
     app = Application.builder().token(TOKEN).build()
+
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("add_birthday", add_birthday))
     app.add_handler(CommandHandler("my_birthday", my_birthday))
@@ -238,15 +239,20 @@ async def main():
     print("🤖 SovetnikMN запущен...")
     await app.run_polling()
 
+
 if __name__ == "__main__":
     import asyncio
 
+    async def runner():
+        await main()
+
     try:
-        asyncio.run(main())
-    except RuntimeError as e:
-        if str(e).startswith("This event loop is already running"):
-            loop = asyncio.get_event_loop()
-            loop.create_task(main())
-            loop.run_forever()
+        loop = asyncio.get_event_loop()
+        if loop.is_running():
+            # Render уже запустил loop — добавим задачу
+            loop.create_task(runner())
         else:
-            raise
+            loop.run_until_complete(runner())
+    except RuntimeError:
+        # Если нет активного loop — создадим новый
+        asyncio.run(runner())
