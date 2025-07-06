@@ -41,8 +41,8 @@ async def init_db():
         await db.commit()
         
 if __name__ == "__main__":
-    asyncio.run(init_db())  # запускаем асинхронную инициализацию
-    main()  # запускаем бота синхронно
+    import asyncio
+    asyncio.run(main())
 
 # 👋 /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
