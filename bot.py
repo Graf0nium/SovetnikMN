@@ -239,8 +239,8 @@ def main():
     app.add_handler(CommandHandler("events", list_events))
     app.add_handler(CommandHandler("event", event_members))
 
- print("🤖 SovetnikMN запущен...")
-    app.run_polling()  
+    print("🤖 SovetnikMN запущен...")
+    app.run_polling()
 
 # 🧨 Инициализация БД и запуск
 if __name__ == "__main__":
