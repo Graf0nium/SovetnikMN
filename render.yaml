@@ -1,9 +1,6 @@
 services:
   - type: web
     name: sovetnikmn
-    env: python
-    pythonVersion: 3.10
-    buildCommand: "pip install --upgrade -r requirements.txt"
-    startCommand: "python bot.py"
+    env: docker
+    dockerfilePath: ./Dockerfile
     autoDeploy: true
-    
