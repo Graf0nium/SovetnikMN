@@ -239,17 +239,7 @@ async def main():
     app.add_handler(CommandHandler("event", event_members))
 
     print("🤖 SovetnikMN запущен...")
-    await app.run_polling()
 
 if __name__ == "__main__":
     import asyncio
     from telegram.ext import Application
-
-    async def runner():
-        await init_db()
-        app = Application.builder().token(TOKEN).build()
-        # добавляй handler'ы…
-        print("🤖 SovetnikMN запущен...")
-        await app.run_polling()
-
-    asyncio.run(runner())
