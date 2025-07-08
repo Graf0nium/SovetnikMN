@@ -220,13 +220,11 @@ async def event_members(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg += "\n".join(f"• {name[0]}" for name in participants)
     await update.message.reply_text(msg)
 
-from telegram.ext import Application, CommandHandler
 import asyncio
+from telegram.ext import Application, CommandHandler
 
-def main():
-    import asyncio
-
-    asyncio.run(init_db())
+async def main():
+    await init_db()
 
     app = Application.builder().token(TOKEN).build()
 
@@ -241,8 +239,7 @@ def main():
     app.add_handler(CommandHandler("event", event_members))
 
     print("🤖 SovetnikMN запущен...")
-    app.run_polling()  # ← ВАЖНО: СИНХРОННО
+    await app.run_polling()
 
 if __name__ == "__main__":
-    main()
-
+    asyncio.run(main())
