@@ -220,10 +220,14 @@ async def event_members(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg += "\n".join(f"• {name[0]}" for name in participants)
     await update.message.reply_text(msg)
 
+from telegram.ext import Application, CommandHandler
 import asyncio
 
-async def main():
-    await init_db()
+def main():
+    import asyncio
+
+    asyncio.run(init_db())
+
     app = Application.builder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
@@ -237,17 +241,8 @@ async def main():
     app.add_handler(CommandHandler("event", event_members))
 
     print("🤖 SovetnikMN запущен...")
-    await app.run_polling()
+    app.run_polling()  # ← ВАЖНО: СИНХРОННО
 
-# 🔥 Вот так правильно запускать в Docker / Render / VSCode / Colab / Jupyter
 if __name__ == "__main__":
-    try:
-        loop = asyncio.get_event_loop()
-        if loop.is_running():
-            # Это Docker/Render или async среда — запускаем таску
-            loop.create_task(main())
-            loop.run_forever()  # <-- добавь это, чтобы не завершался процесс
-        else:
-            loop.run_until_complete(main())
-    except Exception as e:
-        print(f"❌ Ошибка запуска: {e}")
+    main()
+
