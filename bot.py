@@ -242,4 +242,14 @@ async def main():
     await app.run_polling()
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    import asyncio
+    from telegram.ext import Application
+
+    async def runner():
+        await init_db()
+        app = Application.builder().token(TOKEN).build()
+        # добавляй handler'ы…
+        print("🤖 SovetnikMN запущен...")
+        await app.run_polling()
+
+    asyncio.run(runner())
