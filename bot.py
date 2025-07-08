@@ -1,6 +1,5 @@
 import os
 import re
-import asyncio
 import datetime
 import aiosqlite
 from dotenv import load_dotenv
@@ -39,7 +38,7 @@ async def init_db():
             )
         """)
         await db.commit()
-        
+
 # 👋 /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
@@ -221,8 +220,7 @@ async def event_members(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg += "\n".join(f"• {name[0]}" for name in participants)
     await update.message.reply_text(msg)
 
-
-# 👇 здесь остаётся твоя функция main
+# 🚀 Запуск бота
 async def main():
     await init_db()
 
@@ -239,11 +237,17 @@ async def main():
     app.add_handler(CommandHandler("event", event_members))
 
     print("🤖 SovetnikMN запущен...")
-
     await app.run_polling()
 
-# ✅ Запускаем без конфликтов с уже работающим loop
+# ✅ Без конфликта с event loop на Render
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.create_task(main())
-    loop.run_forever()
+    import asyncio
+
+    try:
+        asyncio.run(main())
+    except RuntimeError as e:
+        if "event loop is already running" in str(e):
+            loop = asyncio.get_event_loop()
+            loop.create_task(main())
+        else:
+            raise e
