@@ -221,11 +221,12 @@ async def event_members(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(msg)
 
 # 🚀 Запуск бота
+import asyncio
+
 async def main():
     await init_db()
-
     app = Application.builder().token(TOKEN).build()
-
+    
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("add_birthday", add_birthday))
     app.add_handler(CommandHandler("my_birthday", my_birthday))
@@ -239,15 +240,6 @@ async def main():
     print("🤖 SovetnikMN запущен...")
     await app.run_polling()
 
-# ✅ Без конфликта с event loop на Render
-if __name__ == "__main__":
-    import asyncio
+loop = asyncio.get_event_loop()
+loop.create_task(main())
 
-    try:
-        asyncio.run(main())
-    except RuntimeError as e:
-        if "event loop is already running" in str(e):
-            loop = asyncio.get_event_loop()
-            loop.create_task(main())
-        else:
-            raise e
