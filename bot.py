@@ -221,25 +221,27 @@ async def event_members(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(msg)
 
 # 🚀 Запуск бота
-import asyncio
+def main():
+    import asyncio
 
-async def main():
-    await init_db()
-    app = Application.builder().token(TOKEN).build()
-    
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("add_birthday", add_birthday))
-    app.add_handler(CommandHandler("my_birthday", my_birthday))
-    app.add_handler(CommandHandler("del_birthday", delete_birthday))
-    app.add_handler(CommandHandler("birthdays", all_birthdays))
-    app.add_handler(CommandHandler("create_event", create_event))
-    app.add_handler(CommandHandler("join_event", join_event))
-    app.add_handler(CommandHandler("events", list_events))
-    app.add_handler(CommandHandler("event", event_members))
+    async def _main():
+        await init_db()
+        app = Application.builder().token(TOKEN).build()
 
-    print("🤖 SovetnikMN запущен...")
-    await app.run_polling()
+        app.add_handler(CommandHandler("start", start))
+        app.add_handler(CommandHandler("add_birthday", add_birthday))
+        app.add_handler(CommandHandler("my_birthday", my_birthday))
+        app.add_handler(CommandHandler("del_birthday", delete_birthday))
+        app.add_handler(CommandHandler("birthdays", all_birthdays))
+        app.add_handler(CommandHandler("create_event", create_event))
+        app.add_handler(CommandHandler("join_event", join_event))
+        app.add_handler(CommandHandler("events", list_events))
+        app.add_handler(CommandHandler("event", event_members))
 
-loop = asyncio.get_event_loop()
-loop.create_task(main())
+        print("🤖 SovetnikMN запущен...")
+        await app.run_polling()
 
+    asyncio.run(_main())
+
+if __name__ == "__main__":
+    main()
