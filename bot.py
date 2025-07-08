@@ -241,18 +241,6 @@ async def main():
 
 
 if __name__ == "__main__":
-    import asyncio
+import asyncio
+asyncio.run(main())
 
-    async def runner():
-        await main()
-
-    try:
-        loop = asyncio.get_event_loop()
-        if loop.is_running():
-            # Render уже запустил loop — добавим задачу
-            loop.create_task(runner())
-        else:
-            loop.run_until_complete(runner())
-    except RuntimeError:
-        # Если нет активного loop — создадим новый
-        asyncio.run(runner())
