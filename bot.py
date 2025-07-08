@@ -252,9 +252,16 @@ app.add_handler(CommandHandler("event", event_members))
 
 print("🤖 SovetnikMN запущен...")
 
+import asyncio
+
+# 👇 Запускаем Flask-сервер в фоне
 threading.Thread(target=run_fake_server).start()
 
-loop = asyncio.get_event_loop()
+# 👇 Создаём новый event loop
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
+
+# 👇 И запускаем Telegram-бот
 loop.run_until_complete(init_db())
 loop.run_until_complete(app.run_polling())
 
