@@ -1,7 +1,20 @@
+
 import os
 import re
 import datetime
 import aiosqlite
+from flask import Flask
+import threading
+
+app_fake = Flask(__name__)
+
+@app_fake.route('/')
+def index():
+    return "🤖 SovetnikMN работает!"
+
+def run_fake_server():
+    app_fake.run(host="0.0.0.0", port=10000)
+
 from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import (
@@ -238,6 +251,8 @@ app.add_handler(CommandHandler("events", list_events))
 app.add_handler(CommandHandler("event", event_members))
 
 print("🤖 SovetnikMN запущен...")
+
+threading.Thread(target=run_fake_server).start()
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(init_db())
