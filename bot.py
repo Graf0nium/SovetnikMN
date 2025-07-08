@@ -221,24 +221,28 @@ async def event_members(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(msg)
 
 import asyncio
+from telegram.ext import Application, CommandHandler
 
-async def main():
-    await init_db()
+# 👇 всё как раньше: init_db, handlers и т.д.
 
-    app = Application.builder().token(TOKEN).build()
+app = Application.builder().token(TOKEN).build()
 
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("add_birthday", add_birthday))
-    app.add_handler(CommandHandler("my_birthday", my_birthday))
-    app.add_handler(CommandHandler("del_birthday", delete_birthday))
-    app.add_handler(CommandHandler("birthdays", all_birthdays))
-    app.add_handler(CommandHandler("create_event", create_event))
-    app.add_handler(CommandHandler("join_event", join_event))
-    app.add_handler(CommandHandler("events", list_events))
-    app.add_handler(CommandHandler("event", event_members))
+app.add_handler(CommandHandler("start", start))
+app.add_handler(CommandHandler("add_birthday", add_birthday))
+app.add_handler(CommandHandler("my_birthday", my_birthday))
+app.add_handler(CommandHandler("del_birthday", delete_birthday))
+app.add_handler(CommandHandler("birthdays", all_birthdays))
+app.add_handler(CommandHandler("create_event", create_event))
+app.add_handler(CommandHandler("join_event", join_event))
+app.add_handler(CommandHandler("events", list_events))
+app.add_handler(CommandHandler("event", event_members))
 
-    print("🤖 SovetnikMN запущен...")
-    await app.run_polling()
+print("🤖 SovetnikMN запущен...")
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(init_db())
+loop.run_until_complete(app.run_polling())
+
 
 if __name__ == "__main__":
     asyncio.run(main())
