@@ -262,8 +262,15 @@ loop = asyncio.new_event_loop()
 asyncio.set_event_loop(loop)
 
 # 👇 И запускаем Telegram-бот
+loop.create_task(heartbeat())
 loop.run_until_complete(init_db())
 loop.run_until_complete(app.run_polling())
+
+async def heartbeat():
+    while True:
+        print("💓 SovetnikMN всё ещё работает —", datetime.datetime.now())
+        await asyncio.sleep(300)  # каждые 5 минут
+
 
 
 if __name__ == "__main__":
