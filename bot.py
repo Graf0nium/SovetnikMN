@@ -233,6 +233,29 @@ async def event_members(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg += "\n".join(f"• {name[0]}" for name in participants)
     await update.message.reply_text(msg)
 
+async def notification_loop(app: Application):
+    while True:
+        await asyncio.sleep(60)  # проверяем каждую минуту
+
+        now = datetime.datetime.now()
+        target_time = now + datetime.timedelta(minutes=5)
+
+        async with aiosqlite.connect("data.db") as db:
+            async with db.execute("SELECT name, date, time FROM events") as cursor:
+                events = await cursor.fetchall()
+
+            for name, date_str, time_str in events:
+                dt = datetime.datetime.strptime(f"{date_str}.{now.year} {time_str}", "%d.%m.%Y %H:%M")
+                if dt.date() == target_time.date() and dt.hour == target_time.hour and dt.minute == target_time.minute:
+                    # нашли событие, начинающееся через 5 минут
+                    async with db.execute("SELECT user_id FROM participants WHERE event = ?", (name,)) as cursor:
+                        users = await cursor.fetchall()
+
+                    if users:
+                        tags = " ".join(f"[tg://user?id={uid[0]}](.)" for uid in users)
+                        await app.bot.send_message(GROUP_CHAT_ID, f"⏰ Через 5 минут стартует событие *{name}*!\n{tags}", parse_mode="Markdown")
+
+
 import asyncio
 from telegram.ext import Application, CommandHandler
 
@@ -269,6 +292,7 @@ async def heartbeat():
 
 # 👇 И запускаем Telegram-бот
 loop.create_task(heartbeat())
+loop.create_task(notification_loop(app))
 loop.run_until_complete(init_db())
 loop.run_until_complete(app.run_polling())
 
