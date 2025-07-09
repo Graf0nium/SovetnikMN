@@ -252,6 +252,7 @@ app.add_handler(CommandHandler("event", event_members))
 
 print("🤖 SovetnikMN запущен...")
 
+import datetime
 import asyncio
 
 # 👇 Запускаем Flask-сервер в фоне
@@ -261,17 +262,15 @@ threading.Thread(target=run_fake_server).start()
 loop = asyncio.new_event_loop()
 asyncio.set_event_loop(loop)
 
-# 👇 И запускаем Telegram-бот
-loop.create_task(heartbeat())
-loop.run_until_complete(init_db())
-loop.run_until_complete(app.run_polling())
-
 async def heartbeat():
     while True:
         print("💓 SovetnikMN всё ещё работает —", datetime.datetime.now())
         await asyncio.sleep(300)  # каждые 5 минут
 
-
+# 👇 И запускаем Telegram-бот
+loop.create_task(heartbeat())
+loop.run_until_complete(init_db())
+loop.run_until_complete(app.run_polling())
 
 if __name__ == "__main__":
     asyncio.run(main())
